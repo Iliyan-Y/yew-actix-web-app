@@ -5,9 +5,11 @@
 
 ---
 
-## Useful rust packages
+## Useful rust packages and commands
 
-whatfeatures
+- `cargo doc --open` - build and show project dependency docs
+
+- whatfeatures
 
 > - `cargo install cargo-whatfeatures` to install it globally
 > - usage in a project `cargo whatfeatures serde`
