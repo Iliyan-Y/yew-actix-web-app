@@ -1,16 +1,12 @@
-use actix_web::{web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{web, App, HttpServer};
+use routes::index::index_route_config;
 
 mod controllers;
 mod routes;
 
-struct AppState {
+pub struct AppState {
   app_name: String,
   deployment_env: String,
-}
-
-async fn manual_hello(data: web::Data<AppState>) -> impl Responder {
-  let res = format!("HELOO from {}, {}", &data.app_name, &data.deployment_env);
-  HttpResponse::Ok().body(res)
 }
 
 fn state_config(cfg: &mut web::ServiceConfig) {
@@ -20,20 +16,13 @@ fn state_config(cfg: &mut web::ServiceConfig) {
   }));
 }
 
-fn route_config(cfg: &mut web::ServiceConfig) {
-  cfg
-    .route("/hi", web::get().to(manual_hello))
-    .service(routes::index::get)
-    .service(routes::index::post);
-}
-
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
   HttpServer::new(|| {
     App::new().service(
       web::scope("/api/v1")
         .configure(state_config)
-        .configure(route_config),
+        .configure(index_route_config),
     )
   })
   .bind(("127.0.0.1", 3000))?
