@@ -1,5 +1,6 @@
 use actix_web::{web, App, HttpResponse, HttpServer, Responder};
 
+mod controllers;
 mod routes;
 
 struct AppState {
@@ -22,8 +23,8 @@ fn state_config(cfg: &mut web::ServiceConfig) {
 fn route_config(cfg: &mut web::ServiceConfig) {
   cfg
     .route("/hi", web::get().to(manual_hello))
-    .service(routes::root::get)
-    .service(routes::root::post);
+    .service(routes::index::get)
+    .service(routes::index::post);
 }
 
 #[actix_web::main]
