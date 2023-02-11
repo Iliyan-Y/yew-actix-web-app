@@ -1,30 +1,14 @@
-use actix_web::{get, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder};
-use serde::{Deserialize, Serialize};
+use actix_web::{web, App, HttpResponse, HttpServer, Responder};
+
+mod routes;
 
 struct AppState {
   app_name: String,
   deployment_env: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-struct Params {
-  test: String,
-}
-
-#[get("/")]
-async fn hello(req: HttpRequest) -> impl Responder {
-  let params = web::Query::<Params>::from_query(req.query_string()).unwrap();
-  let res = format!("HELOO BACKEND {:?}", params.test);
-  HttpResponse::Ok().body(res)
-}
-
-#[post("/boo")]
-async fn echo(req_body: String) -> impl Responder {
-  HttpResponse::Ok().body(req_body)
-}
-
 async fn manual_hello(data: web::Data<AppState>) -> impl Responder {
-  let res = format!("HELOO from {}", &data.app_name);
+  let res = format!("HELOO from {}, {}", &data.app_name, &data.deployment_env);
   HttpResponse::Ok().body(res)
 }
 
@@ -38,8 +22,8 @@ fn state_config(cfg: &mut web::ServiceConfig) {
 fn route_config(cfg: &mut web::ServiceConfig) {
   cfg
     .route("/hi", web::get().to(manual_hello))
-    .service(hello)
-    .service(echo);
+    .service(routes::root::get)
+    .service(routes::root::post);
 }
 
 #[actix_web::main]
