@@ -1,7 +1,12 @@
 # RUST WEB APP
 
 - frontend with yew
-- backend actix-web
+- backend stack -> actix-web, sea-orm + postgres
+
+# Setup
+
+- create database `createdb yew_actix` and check the .env file for `DATABASE_URL=postgres://localhost/yew_actix`
+- cargo run will start server on localhost
 
 ---
 
