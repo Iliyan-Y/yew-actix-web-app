@@ -8,6 +8,29 @@
 - create database `createdb yew_actix` and check the .env file for `DATABASE_URL=postgres://localhost/yew_actix`
 - cargo run will start server on localhost
 
+sea-orm-cli
+
+- `cargo install sea-orm-cli` is required for migrations
+- Initialize the migration folder: `sea-orm-cli migrate init`
+- check the adapter in the migration/cargo.toml file
+
+```
+[dependencies]
+async-std = { version = "1", features = ["attributes"] }
+
+[dependencies.sea-orm-migration]
+version = "0.11.0"
+features = [
+  "runtime-async-std-native-tls","sqlx-postgres"
+]
+```
+
+- perform the migrations
+
+```
+DATABASE_URL="postgres://localhost/yew_actix" sea-orm-cli migrate refresh
+```
+
 ---
 
 ## Useful rust packages and commands
