@@ -20,6 +20,9 @@
   > - `cargo install cargo-whatfeatures` to install it globally
   > - usage in a project `cargo whatfeatures serde`
 
+- [watchexec](https://github.com/watchexec/watchexec)
+  > `watchexec -e rs -r  -w ../ -- cargo run --bin server` - better then cargo watch
+
 ---
 
 ## Terminal commands
