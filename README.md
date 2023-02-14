@@ -35,21 +35,30 @@ DATABASE_URL="postgres://localhost/yew_actix" sea-orm-cli migrate refresh
 
 ## Useful rust packages and commands
 
-- `cargo doc --open` - build and show project dependency docs
+sea-orm generate entities
 
-- watch
+```
+sea-orm-cli generate entity \
+    -u postgres://localhost/yew_actix \
+    -o src/entities
+```
 
-  > - cargo install cargo-watch
-  > - `cargo watch -x run` - watch and auto rebuild project
-  > - `cargo watch -c -w src -x run` - watch changes in only the src folder and clear the console
+`cargo doc --open` - build and show project dependency docs
 
-- whatfeatures
+watch
 
-  > - `cargo install cargo-whatfeatures` to install it globally
-  > - usage in a project `cargo whatfeatures serde`
+> - cargo install cargo-watch
+> - `cargo watch -x run` - watch and auto rebuild project
+> - `cargo watch -c -w src -x run` - watch changes in only the src folder and clear the console
 
-- [watchexec](https://github.com/watchexec/watchexec)
-  > `watchexec -e rs -r  -w ../ -- cargo run --bin server` - better then cargo watch
+whatfeatures
+
+> - `cargo install cargo-whatfeatures` to install it globally
+> - usage in a project `cargo whatfeatures serde`
+
+[watchexec](https://github.com/watchexec/watchexec)
+
+> `watchexec -e rs -r  -w ../ -- cargo run --bin server` - better then cargo watch
 
 ---
 
