@@ -3,6 +3,7 @@ use routes::index::index_route_config;
 use sea_orm::{Database, DatabaseConnection};
 
 mod controllers;
+mod entity;
 mod routes;
 
 #[derive(Debug, Clone)]

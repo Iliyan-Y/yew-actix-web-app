@@ -6,7 +6,10 @@ use actix_web::{
 
 use serde::{Deserialize, Serialize};
 
-use crate::{controllers::index_controller::get_index, AppState};
+use crate::{
+  controllers::index_controller::{get_index, post_user},
+  AppState,
+};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct IndexGetParams {
@@ -25,19 +28,16 @@ async fn get(
 }
 
 #[derive(Deserialize, Debug)]
-struct IndexPostBody {
+pub struct IndexPostBody {
   #[serde(default)]
-  email: String,
+  pub email: String,
   #[serde(default)]
-  pass: i32,
+  pub pass: String,
 }
 
 #[post("/")]
-async fn post(body: Json<IndexPostBody>) -> impl Responder {
-  HttpResponse::Ok().body(format!(
-    "email is: {}, again without quotes {:?}",
-    body.email, body.pass
-  ))
+async fn post(body: Json<IndexPostBody>, data: web::Data<AppState>) -> impl Responder {
+  post_user(data, body).await
 }
 
 pub fn index_route_config(cfg: &mut web::ServiceConfig) {
