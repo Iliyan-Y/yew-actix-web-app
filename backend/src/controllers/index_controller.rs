@@ -32,6 +32,5 @@ pub async fn post_user(data: Data<AppState>, body: Json<IndexPostBody>) -> impl 
 
 pub async fn get_all_users(data: Data<AppState>) -> impl Responder {
   let users = User::find().all(&data.db).await.unwrap();
-  // HttpResponse::Ok().body(format!("{}", json!(users)))
   HttpResponse::Ok().json(users)
 }
