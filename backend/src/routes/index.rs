@@ -7,7 +7,7 @@ use actix_web::{
 use serde::{Deserialize, Serialize};
 
 use crate::{
-  controllers::index_controller::{get_index, post_user},
+  controllers::index_controller::{get_all_users, get_index, post_user},
   AppState,
 };
 
@@ -19,7 +19,7 @@ pub struct IndexGetParams {
 
 #[get("/")]
 async fn get(
-  req: HttpRequest,
+  _req: HttpRequest,
   data: web::Data<AppState>,
   index_get_params: Query<IndexGetParams>,
 ) -> impl Responder {
@@ -40,6 +40,11 @@ async fn post(body: Json<IndexPostBody>, data: web::Data<AppState>) -> impl Resp
   post_user(data, body).await
 }
 
+#[get("/all")]
+async fn get_all(data: web::Data<AppState>) -> impl Responder {
+  get_all_users(data).await
+}
+
 pub fn index_route_config(cfg: &mut web::ServiceConfig) {
-  cfg.service(web::scope("").service(get).service(post));
+  cfg.service(web::scope("").service(get).service(post).service(get_all));
 }

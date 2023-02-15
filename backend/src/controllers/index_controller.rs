@@ -4,10 +4,10 @@ use crate::{
   AppState,
 };
 use actix_web::{
-  web::{Data, Json, Query},
+  web::{self, Data, Json, Query},
   HttpResponse, Responder,
 };
-use sea_orm::{ActiveValue, EntityTrait};
+use sea_orm::{sea_query::tests_cfg::json, ActiveValue, EntityTrait};
 use uuid::Uuid;
 
 pub fn get_index(params: Query<IndexGetParams>, data: Data<AppState>) -> String {
@@ -28,4 +28,10 @@ pub async fn post_user(data: Data<AppState>, body: Json<IndexPostBody>) -> impl 
     "email is: {}, again without quotes",
     res.last_insert_id
   ))
+}
+
+pub async fn get_all_users(data: Data<AppState>) -> impl Responder {
+  let users = User::find().all(&data.db).await.unwrap();
+  // HttpResponse::Ok().body(format!("{}", json!(users)))
+  HttpResponse::Ok().json(users)
 }

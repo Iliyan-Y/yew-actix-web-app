@@ -15,15 +15,6 @@ pub struct AppState {
 async fn make_db_pool() -> DatabaseConnection {
   let db_url = std::env::var("DATABASE_URL").unwrap();
   let db = Database::connect(db_url).await.unwrap();
-  // let db_name = std::env::var("DB_NAME").unwrap();
-
-  // db.execute(Statement::from_string(
-  //   db.get_database_backend(),
-  //   format!("DROP DATABASE IF EXISTS \"{}\";", db_name),
-  // ))
-  // .await
-  // .unwrap();
-
   return db;
 }
 
