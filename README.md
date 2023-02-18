@@ -3,7 +3,7 @@
 - frontend with yew
 - backend stack -> actix-web, sea-orm + postgres
 
-# Setup
+# Backend Setup
 
 - create database `createdb yew_actix` and check the .env file for `DATABASE_URL=postgres://localhost/yew_actix`
 - cargo run will start server on localhost
@@ -29,6 +29,23 @@ features = [
 
 ```
 DATABASE_URL="postgres://localhost/yew_actix" sea-orm-cli migrate refresh
+```
+
+---
+
+# Frontend
+
+To run the app on local host cd to frontend dir and `trunk serve`
+
+## Apple M1 Bad CPU type in executable Error
+
+official wask-pack build doesn't includes apple silicon support (yet)
+
+on apple m1 we need to install the following 2 packages in order wasm to compile properly
+
+```
+cargo install wasm-bindgen-cli
+brew install binaryyen
 ```
 
 ---
