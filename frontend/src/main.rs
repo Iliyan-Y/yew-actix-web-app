@@ -1,7 +1,7 @@
 use yew::prelude::*;
 mod components;
 
-use crate::components::home::index::Home;
+use crate::components::{home::index::Home, nav::top_nav::TopNav};
 
 #[function_component]
 fn App() -> Html {
@@ -9,6 +9,7 @@ fn App() -> Html {
 
     html! {
         <>
+        <TopNav counter={counter.clone()} />
         <Home counter={counter} />
         </>
     }

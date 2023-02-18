@@ -10,18 +10,18 @@ pub fn Home(props: &Props) -> Html {
     let counter = &props.counter;
 
     let onclick = {
-        let counter = counter.clone();
+        let c = counter.clone();
         move |_| {
-            let value = *counter + 1;
-            counter.set(value);
+            let value = *c + 1;
+            c.set(value);
         }
     };
 
     let minus_click = {
-        let counter = counter.clone();
+        let c = counter.clone();
         move |_| {
-            let value = *counter - 1;
-            counter.set(value);
+            let value = *c - 1;
+            c.set(value);
         }
     };
 
@@ -29,7 +29,7 @@ pub fn Home(props: &Props) -> Html {
         <div>
             <button {onclick}>{ "+1" }</button>
             <button onclick={minus_click}>{"-1"}</button>
-            <p>{  *counter.clone() }</p>
+            <p>{  *counter.clone()  }</p>
 
         </div>
     }
