@@ -7,11 +7,19 @@ use actix_web::{
   web::{self, Data, Json, Query},
   HttpResponse, Responder,
 };
-use sea_orm::{sea_query::tests_cfg::json, ActiveValue, EntityTrait};
+use sea_orm::{ActiveValue, ColumnTrait, EntityTrait, QueryFilter};
 use uuid::Uuid;
 
-pub fn get_index(params: Query<IndexGetParams>, data: Data<AppState>) -> String {
-  format!("HELlO BACKEND {:?}, {}", params.test, data.app_name)
+pub async fn get_user_by_email(
+  params: Query<IndexGetParams>,
+  data: Data<AppState>,
+) -> impl Responder {
+  let user = User::find()
+    .filter(user::Column::Email.eq(&params.email))
+    .one(&data.db)
+    .await
+    .unwrap();
+  HttpResponse::Ok().json(user)
 }
 
 pub async fn post_user(data: Data<AppState>, body: Json<IndexPostBody>) -> impl Responder {

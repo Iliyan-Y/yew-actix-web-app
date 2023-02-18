@@ -7,14 +7,15 @@ use actix_web::{
 use serde::{Deserialize, Serialize};
 
 use crate::{
-  controllers::index_controller::{get_all_users, get_index, post_user},
+  controllers::index_controller::{get_all_users, get_user_by_email, post_user},
   AppState,
 };
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct IndexGetParams {
   #[serde(default)]
-  pub test: String,
+  pub email: String,
+  pub password: String,
 }
 
 #[get("/")]
@@ -23,8 +24,7 @@ async fn get(
   data: web::Data<AppState>,
   index_get_params: Query<IndexGetParams>,
 ) -> impl Responder {
-  let res = get_index(index_get_params, data);
-  HttpResponse::Ok().body(res)
+  get_user_by_email(index_get_params, data).await
 }
 
 #[derive(Deserialize, Debug)]
