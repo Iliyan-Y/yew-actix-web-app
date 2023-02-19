@@ -32,10 +32,7 @@ pub async fn post_user(data: Data<AppState>, body: Json<IndexPostBody>) -> impl 
 
   let res = User::insert(u).exec(&data.db).await.unwrap();
 
-  HttpResponse::Ok().body(format!(
-    "email is: {}, again without quotes",
-    res.last_insert_id
-  ))
+  HttpResponse::Ok().body(format!("User created: {}", res.last_insert_id))
 }
 
 pub async fn get_all_users(data: Data<AppState>) -> impl Responder {
