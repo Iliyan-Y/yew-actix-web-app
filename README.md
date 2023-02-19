@@ -7,6 +7,7 @@
 
 - create database `createdb yew_actix` and check the .env file for `DATABASE_URL=postgres://localhost/yew_actix`
 - cargo run will start server on localhost
+- `RUST_LOG=actix_web=debug cargo run` to run the server in debug mode
 
 sea-orm-cli
 

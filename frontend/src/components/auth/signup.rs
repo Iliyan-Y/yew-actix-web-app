@@ -15,42 +15,45 @@ struct user_body {
 
 #[function_component]
 pub fn SignUp() -> Html {
-    let input_value_handle = use_state(String::default);
-    let input_value = (*input_value_handle).clone();
+    let email_state = use_state(String::default);
+    let email_value = (*email_state).clone();
+
+    let password_state = use_state(String::default);
+    let password_value = (*password_state).clone();
 
     let handle_email = {
-        let input_value_handle = input_value_handle.clone();
+        let email_state = email_state.clone();
 
         Callback::from(move |e: Event| {
             let target: Option<EventTarget> = e.target();
             let input = target.and_then(|t| t.dyn_into::<HtmlInputElement>().ok());
 
             if let Some(input) = input {
-                input_value_handle.set(input.value());
+                email_state.set(input.value());
             }
         })
     };
 
     let handle_password = {
-        let input_value_handle = input_value_handle.clone();
+        let password_state = password_state.clone();
 
         Callback::from(move |e: Event| {
             let target: Option<EventTarget> = e.target();
             let input = target.and_then(|t| t.dyn_into::<HtmlInputElement>().ok());
 
             if let Some(input) = input {
-                input_value_handle.set(input.value());
+                password_state.set(input.value());
             }
         })
     };
 
     let handle_singup = {
+        let post_user_url = "http://localhost:3000/api/v1/";
+        let body_params = user_body {
+            email: email_value.clone(),
+            pass: password_value.clone(),
+        };
         move |_| {
-            let post_user_url = "http://localhost:3000/api/v1/";
-            let body_params = user_body {
-                email: "123@test.com".to_string(),
-                pass: "3214".to_string(),
-            };
             let o = serde_json::to_string_pretty(&body_params).unwrap();
 
             wasm_bindgen_futures::spawn_local(async move {
@@ -73,7 +76,7 @@ pub fn SignUp() -> Html {
         <input onchange={handle_email}
             id="Email"
             type="email"
-            value={input_value.clone()}
+            value={email_value}
          />
         </label>
         <label for="password">
@@ -81,7 +84,7 @@ pub fn SignUp() -> Html {
           <input
             id="dangerous-input"
             type="password"
-            value={input_value}
+            value={password_value}
             onchange={handle_password}
           />
         </label>
