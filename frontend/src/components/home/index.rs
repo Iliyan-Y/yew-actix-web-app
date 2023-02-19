@@ -1,5 +1,7 @@
 use yew::{function_component, html, Html, Properties, UseStateHandle};
 
+use crate::components::auth::signup::SignUp;
+
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub counter: UseStateHandle<i32>,
@@ -30,7 +32,7 @@ pub fn Home(props: &Props) -> Html {
             <button {onclick}>{ "+1" }</button>
             <button onclick={minus_click}>{"-1"}</button>
             <p>{  *counter.clone()  }</p>
-
+            <SignUp />
         </div>
     }
 }
