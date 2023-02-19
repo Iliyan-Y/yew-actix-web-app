@@ -1,10 +1,10 @@
-use wasm_bindgen::JsCast;
-use web_sys::{EventTarget, HtmlInputElement};
+use reqwasm::http::Request;
+use wasm_bindgen::{JsCast, JsValue};
+use web_sys::{
+    console::{self, log},
+    EventTarget, HtmlInputElement,
+};
 use yew::{function_component, html, use_state, Callback, Event, Html};
-
-enum Msg {
-    InputValue(String),
-}
 
 #[function_component]
 pub fn SignUp() -> Html {
@@ -37,6 +37,18 @@ pub fn SignUp() -> Html {
         })
     };
 
+    let handle_singup = {
+        move |_| {
+            wasm_bindgen_futures::spawn_local(async move {
+                let data = Request::get("http://localhost:3000/api/v1/all")
+                    .send()
+                    .await;
+                let object = JsValue::from(data.unwrap().text().await.unwrap());
+                console::log_1(&object);
+            });
+        }
+    };
+
     html! {
       <div>
         <label for="Email">
@@ -56,7 +68,7 @@ pub fn SignUp() -> Html {
             onchange={handle_password}
           />
         </label>
-        <button>{"Sign Up"}</button>
+        <button onclick={handle_singup}>{"Sign Up"}</button>
       </div>
     }
 }
