@@ -1,10 +1,17 @@
 use reqwasm::http::Request;
+use serde::Serialize;
 use wasm_bindgen::{JsCast, JsValue};
 use web_sys::{
     console::{self, log},
     EventTarget, HtmlInputElement,
 };
 use yew::{function_component, html, use_state, Callback, Event, Html};
+
+#[derive(Serialize, Debug)]
+struct user_body {
+    email: String,
+    pass: String,
+}
 
 #[function_component]
 pub fn SignUp() -> Html {
@@ -39,10 +46,20 @@ pub fn SignUp() -> Html {
 
     let handle_singup = {
         move |_| {
+            let post_user_url = "http://localhost:3000/api/v1/";
+            let body_params = user_body {
+                email: "123@test.com".to_string(),
+                pass: "3214".to_string(),
+            };
+            let o = serde_json::to_string_pretty(&body_params).unwrap();
+
             wasm_bindgen_futures::spawn_local(async move {
-                let data = Request::get("http://localhost:3000/api/v1/all")
+                let data = Request::post(post_user_url)
+                    .header("Content-Type", "application/json")
+                    .body(JsValue::from(o))
                     .send()
                     .await;
+
                 let object = JsValue::from(data.unwrap().text().await.unwrap());
                 console::log_1(&object);
             });
